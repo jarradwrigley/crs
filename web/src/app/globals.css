@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@media (min-width: 640px) {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f3f4f6;
+  }
+
+  body > div {
+    max-width: 375px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.back-image {
+  background-image: radial-gradient(#ffffff40, #fff0 40%),
+    radial-gradient(
+      rgb(255, 209, 82) 30%,
+      rgb(226, 105, 150),
+      rgba(226, 105, 150, 0.4) 41%,
+      transparent 52%
+    ),
+    radial-gradient(rgb(160, 51, 255) 37%, transparent 46%),
+    linear-gradient(155deg, transparent 65%, rgb(37, 212, 102) 95%),
+    linear-gradient(45deg, #0065e0, #0f8bff);
+  background-position: left bottom, 109% 68%, 109% 68%, center center,
+    center center;
+  background-repeat: no-repeat;
+  background-size: 200% 200%, 285% 500%, 285% 500%, cover, cover;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.08;
+  pointer-events: none;
+  position: absolute;
+}
+
