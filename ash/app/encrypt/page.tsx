@@ -24,6 +24,7 @@ import { Textarea } from "../components/ui/textarea";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import StatusModal from "../components/StatusModal";
 
 const EncryptPage = () => {
   const router = useRouter();
@@ -34,6 +35,19 @@ const EncryptPage = () => {
     phoneNumber: "",
     image1: null as File | null,
     image2: null as File | null,
+  });
+  const [modalData, setModalData] = useState<{
+    isOpen: boolean;
+    status: "unencrypted" | "pending" | "encrypted";
+    isExistingUser: boolean;
+    statusDetails: string;
+    userId: string;
+  }>({
+    isOpen: false,
+    status: "pending",
+    isExistingUser: false,
+    statusDetails: "",
+    userId: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -73,18 +87,26 @@ const EncryptPage = () => {
         toast.success(
           "Registration successful! Your application is under review."
         );
-        setFormData({
-          fullName: "",
-          address: "",
-          phoneNumber: "",
-          image1: null,
-          image2: null,
-        });
-        // Reset file inputs
-        const fileInputs = document.querySelectorAll('input[type="file"]');
-        fileInputs.forEach((input: any) => (input.value = ""));
+        // setFormData({
+        //   fullName: "",
+        //   address: "",
+        //   phoneNumber: "",
+        //   image1: null,
+        //   image2: null,
+        // });
+        // // Reset file inputs
+        // const fileInputs = document.querySelectorAll('input[type="file"]');
+        // fileInputs.forEach((input: any) => (input.value = ""));
 
-        router.push("/");
+        setModalData({
+          isOpen: true,
+          status: data.data.status,
+          isExistingUser: data.data.isExistingUser,
+          statusDetails: data.data.statusDetails,
+          userId: data.data.userId,
+        });
+
+        // router.push("/");
       } else {
         toast.error(data.error || "Registration failed");
       }
@@ -107,6 +129,22 @@ const EncryptPage = () => {
         [type]: file,
       }));
     }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      fullName: "",
+      address: "",
+      phoneNumber: "",
+      image1: null,
+      image2: null,
+    });
+
+    // Reset file inputs
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    fileInputs.forEach((input: any) => (input.value = ""));
+
+    setModalData((prev) => ({ ...prev, isOpen: false }));
   };
 
   return (
@@ -291,6 +329,15 @@ const EncryptPage = () => {
           </div>
         </form>
       </div>
+
+      <StatusModal
+        isOpen={modalData.isOpen}
+        onClose={resetForm}
+        status={modalData.status}
+        isExistingUser={modalData.isExistingUser}
+        statusDetails={modalData.statusDetails}
+        userId={modalData.userId}
+      />
     </div>
   );
 };
